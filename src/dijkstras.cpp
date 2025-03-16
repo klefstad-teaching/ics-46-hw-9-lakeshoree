@@ -55,6 +55,8 @@ void print_path(const vector<int>& v, int total) {
         cout << v[i] << ' ';
     }
 
+    cout << "\nTotal cost is " << total << endl;
+
 
 
 }

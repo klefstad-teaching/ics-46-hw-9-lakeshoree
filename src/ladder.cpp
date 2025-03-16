@@ -59,7 +59,7 @@ bool is_adjacent(const string& word1, const string& word2) {
 
 vector<string> generate_word_ladder(const string& begin_word, const string& end_word, const set<string>& word_list) {
 
-    if (begin_word == end_word) {
+    if (begin_word == end_word || word_list.empty()) {
         return {}; // same word results infinite loop
     }
 
@@ -93,10 +93,14 @@ vector<string> generate_word_ladder(const string& begin_word, const string& end_
 void load_words(set<string> & word_list, const string& file_name) {
 
     ifstream ladder_file(file_name);
-    string word;
-    while (ladder_file >> word) {
-        word_list.insert(word);
+    if (ladder_file.is_open()) {
+        string word;
+        while (ladder_file >> word) {
+            word_list.insert(word);
+        }
     }
+
+    return;
 
 }
 
