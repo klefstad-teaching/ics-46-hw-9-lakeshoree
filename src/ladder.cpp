@@ -25,35 +25,31 @@ bool edit_distance_within(const std::string& str1, const std::string& str2, int 
                 return false;
             }
             if (str1length > str2length) {
-                --j;
+                ++i;
             }
             else if (str1length < str2length) {
-                --i;
+                ++j;
             }
+            else {
+                ++i;
+                ++j;
+            }
+        }
+        else {
+            ++i;
+            ++j;
         } 
     }
 
-    num_diffs += (str1length - i) + (str2length - j);
+    num_diffs += abs((str1length - i) + (str2length - j));
     return num_diffs <= d;
 
 }
 
 bool is_adjacent(const string& word1, const string& word2) {
 
-    int num_diffs = 0;
-    for (int i = 0; i < word1.length(); ++i) {
-        if (word1[i] != word2[i]) {
-            ++num_diffs;
-        }
-        if (num_diffs > 1) { // only adjacent if 1 off
-            return false;
-        }
-    }
-
-    if (num_diffs <= 1) {
-        return true;
-    }
-    return false;
+    return edit_distance_within(word1, word2, 1); // simplified logic by just calling edit_distance_within with dist 1
+    // mimics adjacency
 
 }
 
