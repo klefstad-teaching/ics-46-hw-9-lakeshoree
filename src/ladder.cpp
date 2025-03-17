@@ -18,7 +18,7 @@ bool edit_distance_within(const std::string& str1, const std::string& str2, int 
 
     int num_diffs = 0;
     int i = 0, j = 0;
-    while(i < str1length && i < str2length) {
+    while(i < str1length && j < str2length) {
         if(str1[i] != str2[j]) {
             ++num_diffs;
             if (num_diffs > d) {
@@ -30,10 +30,15 @@ bool edit_distance_within(const std::string& str1, const std::string& str2, int 
             else if (str1length < str2length) {
                 ++j;
             }
+            else { 
+                ++i;
+                ++j;
+            }
         }
-        ++i;
-        ++j;
-
+        else { // both chars match
+            ++i;
+            ++j;
+        }
     }
 
     num_diffs += abs((str1length - i) + (str2length - j));
@@ -50,23 +55,20 @@ bool is_adjacent(const string& word1, const string& word2) {
 
 vector<string> generate_word_ladder(const string& begin_word, const string& end_word, const set<string>& word_list) {
 
-    if (word_list.empty() || word_list.end() == word_list.find(end_word)) {
-        return {}; // same word results infinite loop
-    }
-
-    if (begin_word == end_word) {
-        return {begin_word};
-    }
-
     queue<vector<string>> ladder_queue;
     ladder_queue.push({begin_word});
     set<string> visited;
+
+    if (word_list.end() == word_list.find(end_word) || begin_word == end_word) {
+        return {};
+    }
+
     visited.insert(begin_word);
     while (!ladder_queue.empty()) {
         vector<string> ladder = ladder_queue.front();
         ladder_queue.pop();
         string last_word = ladder.back();
-        for (const string word : word_list) {
+        for (const string& word : word_list) {
             if (is_adjacent(last_word, word)) {
                 if (visited.find(word) == visited.end()) {
                     visited.insert(word);
@@ -103,13 +105,13 @@ void load_words(set<string> & word_list, const string& file_name) {
 
 void print_word_ladder(const vector<string>& ladder) {
 
-    if (ladder.empty()) { // no ladder exists
+    if (ladder.size() == 0) { // no ladder exists
         cout << "No word ladder found." << endl;
     }
 
     else {
         cout << "Word ladder found: ";
-        for (int i = 0; i < ladder.size(); ++i) {
+        for (size_t i = 0; i < ladder.size(); ++i) {
             cout << ladder[i] << ' ';
         }
         cout << endl;
