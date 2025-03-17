@@ -9,8 +9,8 @@ void error(string word1, string word2, string msg) {
 
 bool edit_distance_within(const std::string& str1, const std::string& str2, int d) {
 
-    int str1length = str1.length();
-    int str2length = str2.length();
+    int str1length = str1.size();
+    int str2length = str2.size();
 
     if (abs(str1length - str2length) > d) { // can't be withen diffrenence if lenghts differ greter than d
         return false;
@@ -18,7 +18,7 @@ bool edit_distance_within(const std::string& str1, const std::string& str2, int 
 
     int num_diffs = 0;
     int i = 0, j = 0;
-    for (; i < str1length && j < str2length; ++i, ++j) {
+    while(i < str1length && i < str2length) {
         if(str1[i] != str2[j]) {
             ++num_diffs;
             if (num_diffs > d) {
@@ -30,15 +30,10 @@ bool edit_distance_within(const std::string& str1, const std::string& str2, int 
             else if (str1length < str2length) {
                 ++j;
             }
-            else {
-                ++i;
-                ++j;
-            }
         }
-        else {
-            ++i;
-            ++j;
-        } 
+        ++i;
+        ++j;
+
     }
 
     num_diffs += abs((str1length - i) + (str2length - j));
@@ -55,7 +50,7 @@ bool is_adjacent(const string& word1, const string& word2) {
 
 vector<string> generate_word_ladder(const string& begin_word, const string& end_word, const set<string>& word_list) {
 
-    if (begin_word == end_word || word_list.empty()) {
+    if (begin_word == end_word || word_list.empty() || word_list.end() == word_list.find(end_word)) {
         return {}; // same word results infinite loop
     }
 

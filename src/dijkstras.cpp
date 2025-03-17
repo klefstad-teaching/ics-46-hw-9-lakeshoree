@@ -4,12 +4,12 @@ using namespace std;
 
 vector<int> dijkstra_shortest_path(const Graph& G, int source, vector<int>& previous) {
 
-    int numVertices = G.size(); // based off slides
+    int numVertices = G.numVertices; // based off slides
     vector<int> distance(numVertices, INF);
     vector<bool> visited(numVertices, false);
 
     distance[source] = 0;
-    previous[source] = -1; // same as undefined
+    previous.assign(numVertices, -1); // same as undefined
 
     priority_queue<pair<int,int>, vector<pair<int, int>>, greater<pair<int,int>>> minHeap; //using greater to ensure min heap
     minHeap.push({0,source});
@@ -47,12 +47,11 @@ vector<int> extract_shortest_path(const vector<int>& /*distances*/, const vector
 
 void print_path(const vector<int>& v, int total) {
 
-    if (v.empty()) {
-        return;
-    }
+    if (!v.empty()) {
 
-    for (int i = 0; i < v.size(); ++i) {
-        cout << v[i] << " ";
+        for (int i = 0; i < v.size(); ++i) {
+            cout << v[i] << " ";
+        }
     }
 
     cout << "\nTotal cost is " << total << endl;
